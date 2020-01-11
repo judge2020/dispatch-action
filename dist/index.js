@@ -4123,7 +4123,7 @@ function download() {
         core.info(tcpath);
         const upPath = path.basename(tcpath);
         core.info(upPath);
-        const up2Path = path.resolve(upPath, '..');
+        const up2Path = path.join(upPath, '..');
         core.info(up2Path);
         //    if (process.platform !== "win32") {
         //        const exepath = path.join(upPath, 'dispatch')
@@ -4133,6 +4133,7 @@ function download() {
         //        await chmod(exepath, fsconstants.S_IRWXO)
         //    }
         exec.exec(`ls -laR ${up2Path}`);
+        exec.exec(`ls -laR /home/runner/work/_temp/`);
         core.addPath(upPath);
         return Promise.resolve(true);
     });

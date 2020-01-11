@@ -4139,7 +4139,8 @@ function download() {
                     throw new Error(`Error: process.platform was ${process.platform}, not one of win32, darwin, linux`);
             }
         }
-        core.info(path);
+        const cachedPath = yield tc.cacheDir(path, 'dispatch', '1');
+        core.addPath(cachedPath);
         return Promise.resolve(true);
     });
 }

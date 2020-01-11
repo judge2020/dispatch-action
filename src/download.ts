@@ -45,6 +45,7 @@ export async function download(): Promise<boolean> {
                 )
         }
     }
-    core.info(path)
+    const cachedPath = await tc.cacheDir(path, 'dispatch', '1')
+    core.addPath(cachedPath)
     return Promise.resolve(true)
 }

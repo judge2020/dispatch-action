@@ -22,3 +22,4 @@ jobs:
       with: 
         application-id: 10203040506070809
         bot-token: abcdefg
+    - run: dispatch -V

@@ -1,10 +1,15 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Discord Dispatch'
+description: 'installs Discord Dispatch and authenticates you'
+author: 'judge2020'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  application-id:
+    description: 'the application ID you will publish to'
+    required: true
+    default: 'oof'
+  bot-token:
+    description: 'a bot token generated from the same application'
+    required: true
+    default: 'oof'
 runs:
   using: 'node12'
   main: 'dist/index.js'

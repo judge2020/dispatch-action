@@ -1,19 +1,22 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import { download } from './download'
+import * as os from 'os'
 
 async function run(): Promise<void> {
-  try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    try {
+        switch (os.platform()) {
+            case 'win32':
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+        }
+        const appid: string = core.getInput('application-id')
+        core.debug(`Application ID ${appid}`)
+        const token: string = core.getInput('bot-token')
+        core.debug(`Bot token length ${token.length}`)
+        await download();
 
-    core.setOutput('time', new Date().toTimeString())
-  } catch (error) {
-    core.setFailed(error.message)
-  }
+    } catch (error) {
+        core.setFailed(error.message)
+    }
 }
 
 run()

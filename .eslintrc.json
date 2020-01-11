@@ -10,8 +10,10 @@
     "rules": {
       "eslint-comments/no-use": "off",
       "import/no-namespace": "off",
+      "import/first": "off",
       "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "error",
+      "no-shadow": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/explicit-member-accessibility": ["error", {"accessibility": "no-public"}],
       "@typescript-eslint/no-require-imports": "error",
       "@typescript-eslint/array-type": "error",

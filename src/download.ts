@@ -5,13 +5,6 @@ import * as path from 'path'
 import { chmod } from '@actions/io/lib/io-util'
 
 export async function download(): Promise<boolean> {
-    try {
-        io.which('dispatch')
-        return true
-    }
-    catch(error) {
-        // All good
-    }
     let tcpath: string
     let toName: string
     switch (process.platform) {

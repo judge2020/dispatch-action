@@ -4101,6 +4101,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
+const io = __importStar(__webpack_require__(1));
 const tc = __importStar(__webpack_require__(533));
 const exec = __importStar(__webpack_require__(986));
 const path = __importStar(__webpack_require__(622));
@@ -4109,15 +4110,19 @@ const fs_1 = __webpack_require__(747);
 function download() {
     return __awaiter(this, void 0, void 0, function* () {
         let tcpath;
+        let toName;
         switch (process.platform) {
             case 'win32':
-                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/win64', 'dispatch.exe');
+                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/win64');
+                toName = 'dispatch.exe';
                 break;
             case 'darwin':
-                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/macos', 'dispatch');
+                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/macos');
+                toName = 'dispatch';
                 break;
             case 'linux':
-                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/linux', 'dispatch');
+                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/linux');
+                toName = 'dispatch';
                 break;
             default:
                 throw new Error(`Error: process.platform was ${process.platform}, not one of win32, darwin, linux`);
@@ -4125,9 +4130,12 @@ function download() {
         core.info(tcpath);
         const upPath = path.basename(tcpath);
         core.info(upPath);
+        const newpath = path.join(upPath, toName);
+        core.info(newpath);
+        yield io.mv(tcpath, newpath);
         if (process.platform !== "win32") {
-            yield io_util_1.chmod(tcpath, fs_1.constants.S_IRWXU);
-            yield io_util_1.chmod(tcpath, fs_1.constants.S_IRWXO);
+            yield io_util_1.chmod(newpath, fs_1.constants.S_IRWXU);
+            yield io_util_1.chmod(newpath, fs_1.constants.S_IRWXO);
         }
         exec.exec(`ls -laR ${upPath}`);
         exec.exec(`ls -laR /home/runner/work/_temp/`);

@@ -9,13 +9,13 @@ export async function download(): Promise<boolean> {
     let tcpath: string
     switch (process.platform) {
         case 'win32':
-            tcpath = await tc.downloadTool('https://dl-dispatch.discordapp.net/download/win64')
+            tcpath = await tc.downloadTool('https://dl-dispatch.discordapp.net/download/win64', 'dispatch.exe')
             break
         case 'darwin':
-            tcpath = await tc.downloadTool('https://dl-dispatch.discordapp.net/download/macos')
+            tcpath = await tc.downloadTool('https://dl-dispatch.discordapp.net/download/macos', 'dispatch')
             break
         case 'linux':
-            tcpath = await tc.downloadTool('https://dl-dispatch.discordapp.net/download/linux')
+            tcpath = await tc.downloadTool('https://dl-dispatch.discordapp.net/download/linux', 'dispatch')
             break
         default:
             throw new Error(`Error: process.platform was ${process.platform}, not one of win32, darwin, linux`)
@@ -23,16 +23,11 @@ export async function download(): Promise<boolean> {
     core.info(tcpath)
     const upPath = path.basename(tcpath)
     core.info(upPath)
-    const up2Path = path.join(upPath, '..')
-    core.info(up2Path)
-//    if (process.platform !== "win32") {
-//        const exepath = path.join(upPath, 'dispatch')
-//        await chmod(upPath, fsconstants.S_IRWXU)
-//        await chmod(upPath, fsconstants.S_IRWXO)
-//        await chmod(exepath, fsconstants.S_IRWXU)
-//        await chmod(exepath, fsconstants.S_IRWXO)
-//    }
-    exec.exec(`ls -laR ${up2Path}`)
+    if (process.platform !== "win32") {
+        await chmod(tcpath, fsconstants.S_IRWXU)
+        await chmod(tcpath, fsconstants.S_IRWXO)
+    }
+    exec.exec(`ls -laR ${upPath}`)
     exec.exec(`ls -laR /home/runner/work/_temp/`)
     core.addPath(upPath)
     return Promise.resolve(true)

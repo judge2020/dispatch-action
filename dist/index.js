@@ -4104,18 +4104,20 @@ const core = __importStar(__webpack_require__(470));
 const tc = __importStar(__webpack_require__(533));
 const exec = __importStar(__webpack_require__(986));
 const path = __importStar(__webpack_require__(622));
+const io_util_1 = __webpack_require__(672);
+const fs_1 = __webpack_require__(747);
 function download() {
     return __awaiter(this, void 0, void 0, function* () {
         let tcpath;
         switch (process.platform) {
             case 'win32':
-                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/win64');
+                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/win64', 'dispatch.exe');
                 break;
             case 'darwin':
-                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/macos');
+                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/macos', 'dispatch');
                 break;
             case 'linux':
-                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/linux');
+                tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/linux', 'dispatch');
                 break;
             default:
                 throw new Error(`Error: process.platform was ${process.platform}, not one of win32, darwin, linux`);
@@ -4123,16 +4125,11 @@ function download() {
         core.info(tcpath);
         const upPath = path.basename(tcpath);
         core.info(upPath);
-        const up2Path = path.join(upPath, '..');
-        core.info(up2Path);
-        //    if (process.platform !== "win32") {
-        //        const exepath = path.join(upPath, 'dispatch')
-        //        await chmod(upPath, fsconstants.S_IRWXU)
-        //        await chmod(upPath, fsconstants.S_IRWXO)
-        //        await chmod(exepath, fsconstants.S_IRWXU)
-        //        await chmod(exepath, fsconstants.S_IRWXO)
-        //    }
-        exec.exec(`ls -laR ${up2Path}`);
+        if (process.platform !== "win32") {
+            yield io_util_1.chmod(tcpath, fs_1.constants.S_IRWXU);
+            yield io_util_1.chmod(tcpath, fs_1.constants.S_IRWXO);
+        }
+        exec.exec(`ls -laR ${upPath}`);
         exec.exec(`ls -laR /home/runner/work/_temp/`);
         core.addPath(upPath);
         return Promise.resolve(true);

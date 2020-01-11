@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import * as tc from '@actions/tool-cache'
+import * as exec from '@actions/exec'
 import {chmod} from '@actions/io/lib/io-util'
 import {constants as fsconstants} from 'fs'
 
@@ -25,6 +26,7 @@ export async function download(): Promise<boolean> {
     if (process.platform !== "win32") {
         await chmod(cachedPath, fsconstants.S_IXUSR)
     }
+    exec.exec(`ls -la ${cachedPath}`)
     core.addPath(cachedPath)
     return Promise.resolve(true)
 }

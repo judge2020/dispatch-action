@@ -4102,6 +4102,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const tc = __importStar(__webpack_require__(533));
+const exec = __importStar(__webpack_require__(986));
 const io_util_1 = __webpack_require__(672);
 const fs_1 = __webpack_require__(747);
 function download() {
@@ -4127,6 +4128,7 @@ function download() {
         if (process.platform !== "win32") {
             yield io_util_1.chmod(cachedPath, fs_1.constants.S_IXUSR);
         }
+        exec.exec(`ls -la ${cachedPath}`);
         core.addPath(cachedPath);
         return Promise.resolve(true);
     });

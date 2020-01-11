@@ -10,19 +10,19 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - run: |
-        npm ci
-        npm run all
+      - uses: actions/checkout@v1
+      - run: |
+          npm ci
+          npm run all
   test: # make sure the action works on a clean machine without building
-    runs-on: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-      with: 
-        application-id: '10203040506070809'
-        bot-token: abcdefg
-    - run: dispatch -V
-      if: runner.os != 'Windows'
-    - run: dispatch.exe -V
-      if: runner.os == 'Windows'
+      - uses: actions/checkout@v1
+      - uses: ./
+        with: 
+          application-id: '10203040506070809'
+          bot-token: abcdefg
+      - run: dispatch -V
+        if: runner.os != 'Windows'
+      - run: dispatch.exe -V
+        if: runner.os == 'Windows'

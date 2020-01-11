@@ -1,6 +1,6 @@
 {
   "name": "@judge2020/dispatch-action",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "description": "installs Discord Dispatch and authenticates you",
   "main": "lib/main.js",

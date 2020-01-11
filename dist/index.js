@@ -4149,13 +4149,6 @@ const path = __importStar(__webpack_require__(622));
 const io_util_1 = __webpack_require__(672);
 function download() {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            io.which('dispatch');
-            return true;
-        }
-        catch (error) {
-            // All good
-        }
         let tcpath;
         let toName;
         switch (process.platform) {

@@ -1,4 +1,4 @@
-name: 'Discord Dispatch'
+name: 'Discord Dispatch Action'
 description: 'installs Discord Dispatch and authenticates you'
 author: 'judge2020'
 inputs:
@@ -13,3 +13,6 @@ inputs:
 runs:
   using: 'node12'
   main: 'dist/index.js'
+branding:
+  icon: 'upload-cloud'
+  color: 'purple'

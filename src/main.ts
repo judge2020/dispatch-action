@@ -8,9 +8,9 @@ async function run(): Promise<void> {
             case 'win32':
         }
         const appid: string = core.getInput('application-id')
-        core.debug(`Application ID ${appid}`)
+        core.info(`Application ID ${appid}`)
         const token: string = core.getInput('bot-token')
-        core.debug(`Bot token length ${token.length}`)
+        core.info(`Bot token length ${token.length}`)
         await download()
     } catch (error) {
         core.setFailed(error.message)

@@ -1003,9 +1003,9 @@ function run() {
                 case 'win32':
             }
             const appid = core.getInput('application-id');
-            core.debug(`Application ID ${appid}`);
+            core.info(`Application ID ${appid}`);
             const token = core.getInput('bot-token');
-            core.debug(`Bot token length ${token.length}`);
+            core.info(`Bot token length ${token.length}`);
             yield download_1.download();
         }
         catch (error) {
@@ -4100,26 +4100,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-let tempDirectory = process.env['RUNNER_TEMPDIRECTORY'] || '';
 const core = __importStar(__webpack_require__(470));
 const tc = __importStar(__webpack_require__(533));
-const path = __importStar(__webpack_require__(622));
-if (!tempDirectory) {
-    let baseLocation;
-    if (process.platform === 'win32') {
-        // On windows use the USERPROFILE env variable
-        baseLocation = process.env['USERPROFILE'] || 'C:\\';
-    }
-    else {
-        if (process.platform === 'darwin') {
-            baseLocation = '/Users';
-        }
-        else {
-            baseLocation = '/home';
-        }
-    }
-    tempDirectory = path.join(baseLocation, 'actions', 'temp');
-}
+const io_util_1 = __webpack_require__(672);
+const fs_1 = __webpack_require__(747);
 function download() {
     return __awaiter(this, void 0, void 0, function* () {
         let path;
@@ -4139,7 +4123,10 @@ function download() {
                     throw new Error(`Error: process.platform was ${process.platform}, not one of win32, darwin, linux`);
             }
         }
-        const cachedPath = yield tc.cacheDir(path, 'dispatch', '1');
+        const cachedPath = yield tc.cacheFile(path, 'dispatch.exe', 'dispatch.exe', '1');
+        if (process.platform !== "win32") {
+            yield io_util_1.chmod(cachedPath, fs_1.constants.S_IXUSR);
+        }
         core.addPath(cachedPath);
         return Promise.resolve(true);
     });

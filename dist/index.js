@@ -996,6 +996,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const download_1 = __webpack_require__(851);
 const os = __importStar(__webpack_require__(87));
+const auth_1 = __webpack_require__(827);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -1007,6 +1008,7 @@ function run() {
             const token = core.getInput('bot-token');
             core.info(`Bot token length ${token.length}`);
             yield download_1.download();
+            yield auth_1.writeAuth(appid, token);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -4071,6 +4073,46 @@ module.exports = v4;
 
 /***/ }),
 
+/***/ 827:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const io = __importStar(__webpack_require__(1));
+const os = __importStar(__webpack_require__(87));
+const path = __importStar(__webpack_require__(622));
+const fs_1 = __webpack_require__(747);
+function writeAuth(appid, botToken) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const outJson = { "BotCredentials": { "application_id": appid, "token": botToken } };
+        const homedir = os.homedir();
+        yield io.mkdirP(path.join(homedir, '.dispatch'));
+        yield fs_1.promises.writeFile(path.join(homedir, '.dispatch', 'credentials.json'), JSON.stringify(outJson));
+        return true;
+    });
+}
+exports.writeAuth = writeAuth;
+
+
+/***/ }),
+
 /***/ 835:
 /***/ (function(module) {
 
@@ -4107,6 +4149,13 @@ const path = __importStar(__webpack_require__(622));
 const io_util_1 = __webpack_require__(672);
 function download() {
     return __awaiter(this, void 0, void 0, function* () {
+        try {
+            io.which('dispatch');
+            return true;
+        }
+        catch (error) {
+            // All good
+        }
         let tcpath;
         let toName;
         switch (process.platform) {
@@ -4132,7 +4181,7 @@ function download() {
             yield io_util_1.chmod(newpath, 0o755);
         }
         core.addPath(upPath);
-        return Promise.resolve(true);
+        return true;
     });
 }
 exports.download = download;

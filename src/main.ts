@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import {download} from './download'
 import * as os from 'os'
+import { writeAuth } from './auth'
 
 async function run(): Promise<void> {
     try {
@@ -12,6 +13,7 @@ async function run(): Promise<void> {
         const token: string = core.getInput('bot-token')
         core.info(`Bot token length ${token.length}`)
         await download()
+        await writeAuth(appid, token)
     } catch (error) {
         core.setFailed(error.message)
     }

@@ -10,7 +10,7 @@ Once you've done that, you can use the action like so:
 
 ```
 steps:
-  - uses: judge2020/discord-dispatch-github-action@master
+  - uses: judge2020/dispatch-action@master
     with:
       application-id: '10203040506070809'
       bot-token: ${{ secrets.DISCORD_BOT_TOKEN }}

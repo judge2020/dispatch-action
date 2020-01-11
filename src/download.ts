@@ -1,11 +1,17 @@
 import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as tc from '@actions/tool-cache'
-import * as exec from '@actions/exec'
 import * as path from 'path'
 import { chmod } from '@actions/io/lib/io-util'
 
 export async function download(): Promise<boolean> {
+    try {
+        io.which('dispatch')
+        return true
+    }
+    catch(error) {
+        // All good
+    }
     let tcpath: string
     let toName: string
     switch (process.platform) {
@@ -31,5 +37,5 @@ export async function download(): Promise<boolean> {
         await chmod(newpath, 0o755)
     }
     core.addPath(upPath)
-    return Promise.resolve(true)
+    return true
 }

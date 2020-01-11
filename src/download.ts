@@ -21,14 +21,14 @@ export async function download(): Promise<boolean> {
             throw new Error(`Error: process.platform was ${process.platform}, not one of win32, darwin, linux`)
     }
     const upPath = path.basename(tcpath)
-    if (process.platform !== "win32") {
-        const exepath = path.join(upPath, 'dispatch')
-        await chmod(upPath, fsconstants.S_IRWXU)
-        await chmod(upPath, fsconstants.S_IRWXO)
-        await chmod(exepath, fsconstants.S_IRWXU)
-        await chmod(exepath, fsconstants.S_IRWXO)
-    }
-    exec.exec(`ls -la ${upPath}`)
+//    if (process.platform !== "win32") {
+//        const exepath = path.join(upPath, 'dispatch')
+//        await chmod(upPath, fsconstants.S_IRWXU)
+//        await chmod(upPath, fsconstants.S_IRWXO)
+//        await chmod(exepath, fsconstants.S_IRWXU)
+//        await chmod(exepath, fsconstants.S_IRWXO)
+//    }
+    exec.exec(`ls -laR ${upPath}`)
     core.addPath(upPath)
     return Promise.resolve(true)
 }

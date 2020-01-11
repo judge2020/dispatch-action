@@ -4106,7 +4106,6 @@ const tc = __importStar(__webpack_require__(533));
 const exec = __importStar(__webpack_require__(986));
 const path = __importStar(__webpack_require__(622));
 const io_util_1 = __webpack_require__(672);
-const fs_1 = __webpack_require__(747);
 function download() {
     return __awaiter(this, void 0, void 0, function* () {
         let tcpath;
@@ -4127,18 +4126,13 @@ function download() {
             default:
                 throw new Error(`Error: process.platform was ${process.platform}, not one of win32, darwin, linux`);
         }
-        core.info(tcpath);
         const upPath = path.basename(tcpath);
-        core.info(upPath);
         const newpath = path.join(upPath, toName);
-        core.info(newpath);
         yield io.mv(tcpath, newpath);
         if (process.platform !== "win32") {
-            yield io_util_1.chmod(newpath, fs_1.constants.S_IRWXU);
-            yield io_util_1.chmod(newpath, fs_1.constants.S_IRWXO);
+            yield io_util_1.chmod(newpath, 0o755);
         }
         exec.exec(`ls -laR ${upPath}`);
-        exec.exec(`ls -laR /home/runner/work/_temp/`);
         core.addPath(upPath);
         return Promise.resolve(true);
     });

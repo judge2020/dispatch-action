@@ -4103,30 +4103,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const tc = __importStar(__webpack_require__(533));
 const exec = __importStar(__webpack_require__(986));
+const path = __importStar(__webpack_require__(622));
 const io_util_1 = __webpack_require__(672);
 const fs_1 = __webpack_require__(747);
 function download() {
     return __awaiter(this, void 0, void 0, function* () {
-        let path;
-        path = tc.find('dispatch', '1');
+        let tcpath;
+        tcpath = tc.find('dispatch', '1');
         if (!path) {
             switch (process.platform) {
                 case 'win32':
-                    path = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/win64');
+                    tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/win64');
                     break;
                 case 'darwin':
-                    path = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/macos');
+                    tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/macos');
                     break;
                 case 'linux':
-                    path = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/linux');
+                    tcpath = yield tc.downloadTool('https://dl-dispatch.discordapp.net/download/linux');
                     break;
                 default:
                     throw new Error(`Error: process.platform was ${process.platform}, not one of win32, darwin, linux`);
             }
         }
-        const cachedPath = yield tc.cacheFile(path, 'dispatch.exe', 'dispatch.exe', '1');
+        const cachedPath = yield tc.cacheFile(tcpath, 'dispatch.exe', 'dispatch', '1');
         if (process.platform !== "win32") {
-            yield io_util_1.chmod(cachedPath, fs_1.constants.S_IXUSR);
+            const exepath = path.join(cachedPath, 'dispatch.exe');
+            yield io_util_1.chmod(cachedPath, fs_1.constants.S_IRWXU);
+            yield io_util_1.chmod(cachedPath, fs_1.constants.S_IRWXO);
+            yield io_util_1.chmod(exepath, fs_1.constants.S_IRWXU);
+            yield io_util_1.chmod(exepath, fs_1.constants.S_IRWXO);
         }
         exec.exec(`ls -la ${cachedPath}`);
         core.addPath(cachedPath);

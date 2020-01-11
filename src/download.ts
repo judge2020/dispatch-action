@@ -4,7 +4,6 @@ import * as tc from '@actions/tool-cache'
 import * as exec from '@actions/exec'
 import * as path from 'path'
 import { chmod } from '@actions/io/lib/io-util'
-import { constants as fsconstants } from 'fs'
 
 export async function download(): Promise<boolean> {
     let tcpath: string
@@ -31,7 +30,6 @@ export async function download(): Promise<boolean> {
     if (process.platform !== "win32") {
         await chmod(newpath, 0o755)
     }
-    exec.exec(`ls -laR ${upPath}`)
     core.addPath(upPath)
     return Promise.resolve(true)
 }

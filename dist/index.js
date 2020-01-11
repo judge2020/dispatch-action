@@ -4103,7 +4103,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const io = __importStar(__webpack_require__(1));
 const tc = __importStar(__webpack_require__(533));
-const exec = __importStar(__webpack_require__(986));
 const path = __importStar(__webpack_require__(622));
 const io_util_1 = __webpack_require__(672);
 function download() {
@@ -4132,7 +4131,6 @@ function download() {
         if (process.platform !== "win32") {
             yield io_util_1.chmod(newpath, 0o755);
         }
-        exec.exec(`ls -laR ${upPath}`);
         core.addPath(upPath);
         return Promise.resolve(true);
     });

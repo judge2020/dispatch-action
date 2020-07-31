@@ -10,7 +10,7 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - run: |
           npm ci
           npm run all
@@ -20,7 +20,7 @@ jobs:
       matrix:
         os: [windows-latest, macos-latest, ubuntu-latest]
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: ./
         with: 
           application-id: '10203040506070809'
